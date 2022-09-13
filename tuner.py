@@ -9,7 +9,7 @@ class Tuner:
         self.env = env
         self.alg = alg
 
-    def tune():
+    def tune(self):
         while not self.alg.done():
             candidate = self.alg.next()
             result = self.env.step(candidate)
@@ -17,8 +17,8 @@ class Tuner:
 
 def __init__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_option('--compile_cmd', type=str, help="Compile command")
-    parser.add_option('--source_file', type=str, help="Source file")
+    parser.add_option('--compile', type=str, help="File with compile command")
+    parser.add_option('--source', type=str, help="Source file")
     parser.add_option('--env_def', type=str, help="Environment definition file")
     args = parser.parse_args()
 

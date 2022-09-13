@@ -3,8 +3,11 @@ import json
 import subprocess
 
 class CppEnvironment(Environment):
-    def __init__(self, args) -> None:
-        self.compile_cmd = args.compile_cmd
+    def __init__(self, args.compile) -> None:
+        with open(args.compile, 'r') as f:
+            data = json.load(f)
+        self.compile_cmd = data["compiler"] + data["compiler_flags"]
+        self.exec_cmd = data["executable"] + data["executable_flags"]
         self.source = args.source
         with open(args.source, 'r') as f:
             data = json.load(f)
@@ -19,9 +22,15 @@ class CppEnvironment(Environment):
         with open(self.candidate_file, 'w') as f:
             f.write(data)
 
+    def parse(self, output):
+        return output
+
     def step(self, x):
         self.update_source(x)
         p = subprocess.Popen(self.compile_cmd, stdout=subprocess.PIPE)
+        p.wait()
+        p = subprocess.Popen(self.exec_cmd, stdout=subprocess.PIPE)
         output = p.communicate()
         p.wait()
-        return output
+        metrics = self.parse(output)
+        return metrics
