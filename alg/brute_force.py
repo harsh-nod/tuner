@@ -17,6 +17,7 @@ class BruteForce(Algorithm):
         self.num_candidates = reduce(lambda x, y : x * y, [len(x) for x in self.ranges])
         self.candidates = itertools.product(*self.ranges)
         self.count = 0
+        self.best = 100
 
     def next(self):
         self.count += 1
@@ -24,12 +25,17 @@ class BruteForce(Algorithm):
         return self.candidate
 
     def update(self, result):
-        print(f"{self.candidate} --> {result}")
+        if result < self.best:
+            self.best = result
+        print(f"{self.candidate} --> {result} | Best: {self.best}")
         if not os.path.exists('history.json'):
             Path('history.json').touch()
 
         with open('history.json', 'r+') as f:
-            data = json.load(f)
+            try:
+                data = json.load(f)
+            except:
+                data = {"history": []}
             data["history"].append(
                 {"candidate": self.candidate, "objective": result}
             )

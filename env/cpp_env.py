@@ -6,6 +6,7 @@ class CppEnvironment(Environment):
     def __init__(self, args) -> None:
         with open(args.compile, 'r') as f:
             data = json.load(f)
+        self.precompile_cmd = [data["pre_compiler"]] + data["pre_compiler_flags"]
         self.compile_cmd = [data["compiler"]] + data["compiler_flags"]
         self.exec_cmd = [data["executable"]] + data["executable_flags"]
         self.source = args.source
@@ -23,14 +24,20 @@ class CppEnvironment(Environment):
             f.write(data)
 
     def parse(self, output):
-        return output
+        try:
+            metric = float(output[0].decode('utf-8').split()[-6])
+        except:
+            metric = 100
+        return metric
 
     def step(self, x):
         self.update_source(x)
-        print(' '.join(self.compile_cmd))
+        p = subprocess.Popen(self.precompile_cmd, stdout=subprocess.PIPE)
+        p.wait()
+        #print(' '.join(self.compile_cmd))
         p = subprocess.Popen(self.compile_cmd, stdout=subprocess.PIPE)
         p.wait()
-        print(' '.join(self.exec_cmd))
+        #print(' '.join(self.exec_cmd))
         p = subprocess.Popen(self.exec_cmd, stdout=subprocess.PIPE)
         output = p.communicate()
         p.wait()
