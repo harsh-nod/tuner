@@ -2,6 +2,8 @@ from alg.algorithm import Algorithm
 import itertools
 from functools import reduce
 import json
+import os
+from pathlib import Path
 
 class BruteForce(Algorithm):
     def __init__(self, args) -> None:
@@ -13,15 +15,19 @@ class BruteForce(Algorithm):
             self.variables.append(k)
             self.ranges.append(v)
         self.num_candidates = reduce(lambda x, y : x * y, [len(x) for x in self.ranges])
-        self.candidates = itertools.product(self.ranges)
+        self.candidates = itertools.product(*self.ranges)
         self.count = 0
 
     def next(self):
         self.count += 1
-        self.candidate = next(self.candidates)
-        return {x:y for x, y in zip(self.variables, candidate)}
+        self.candidate = {x:y for x, y in zip(self.variables, next(self.candidates))}
+        return self.candidate
 
     def update(self, result):
+        print(f"{self.candidate} --> {result}")
+        if not os.path.exists('history.json'):
+            Path('history.json').touch()
+
         with open('history.json', 'r+') as f:
             data = json.load(f)
             data["history"].append(

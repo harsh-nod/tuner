@@ -17,7 +17,7 @@ class CppEnvironment(Environment):
         with open(self.source, 'r') as f:
             data = f.read()
         for k, v in x.items():
-            data = data.replace('$' + k, v)
+            data = data.replace('$' + k, str(v))
         self.candidate_file = self.source[:-5]
         with open(self.candidate_file, 'w') as f:
             f.write(data)
@@ -27,8 +27,10 @@ class CppEnvironment(Environment):
 
     def step(self, x):
         self.update_source(x)
+        print(' '.join(self.compile_cmd))
         p = subprocess.Popen(self.compile_cmd, stdout=subprocess.PIPE)
         p.wait()
+        print(' '.join(self.exec_cmd))
         p = subprocess.Popen(self.exec_cmd, stdout=subprocess.PIPE)
         output = p.communicate()
         p.wait()

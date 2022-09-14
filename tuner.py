@@ -25,3 +25,4 @@ if __name__ == "__main__":
     env = CppEnvironment(args)
     alg = BruteForce(args)
     t = Tuner(env, alg)
+    t.tune()
