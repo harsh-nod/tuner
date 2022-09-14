@@ -15,11 +15,11 @@ class Tuner:
             result = self.env.step(candidate)
             self.alg.update(result)
 
-def __init__ == "__main__":
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_option('--compile', type=str, help="File with compile command")
-    parser.add_option('--source', type=str, help="Source file")
-    parser.add_option('--env_def', type=str, help="Environment definition file")
+    parser.add_argument('--compile', type=str, help="File with compile command")
+    parser.add_argument('--source', type=str, help="Source file")
+    parser.add_argument('--env_def', type=str, help="Environment definition file")
     args = parser.parse_args()
 
     env = CppEnvironment(args)

@@ -1,9 +1,9 @@
-from environment import Environment
+from env.environment import Environment
 import json
 import subprocess
 
 class CppEnvironment(Environment):
-    def __init__(self, args.compile) -> None:
+    def __init__(self, args) -> None:
         with open(args.compile, 'r') as f:
             data = json.load(f)
         self.compile_cmd = data["compiler"] + data["compiler_flags"]

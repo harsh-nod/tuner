@@ -1,4 +1,4 @@
-from algorithm import Algorithm
+from alg.algorithm import Algorithm
 import itertools
 from functools import reduce
 import json
