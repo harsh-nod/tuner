@@ -5,7 +5,7 @@ import json
 
 class BruteForce(Algorithm):
     def __init__(self, args) -> None:
-        with open(args.source, 'r') as f:
+        with open(args.env_def, 'r') as f:
             data = json.load(f)
         self.variables = []
         self.ranges = []

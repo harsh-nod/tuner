@@ -6,10 +6,10 @@ class CppEnvironment(Environment):
     def __init__(self, args) -> None:
         with open(args.compile, 'r') as f:
             data = json.load(f)
-        self.compile_cmd = data["compiler"] + data["compiler_flags"]
-        self.exec_cmd = data["executable"] + data["executable_flags"]
+        self.compile_cmd = [data["compiler"]] + data["compiler_flags"]
+        self.exec_cmd = [data["executable"]] + data["executable_flags"]
         self.source = args.source
-        with open(args.source, 'r') as f:
+        with open(args.env_def, 'r') as f:
             data = json.load(f)
         self.variables = [k for k in data.keys()]
 
